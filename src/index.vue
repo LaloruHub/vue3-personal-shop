@@ -1,28 +1,30 @@
 <template>
-	<div class="d-flex justify-content-center">
+	<div>
 		<input
 			type="search"
-			class="col-lg-2 col-lg-offset-4 my-4"
+			class="col-2 col-offset-4 my-4 mx-5"
 			v-model="product"
 			placeholder="Search" />
 	</div>
-	<div class="d-flex flex-row justify-content-around">
+	<div class="container">
 		<section v-for="product in searchProduct">
-			<article class="d-flex flex-column align-items-center">
+			<article class=" product d-flex flex-column align-items-start position-relative">
 				<img
 					:src="product.photo"
 					:alt="product.name"
 					width="250"
 					height="150" />
-				<div class="my-2 d-flex flex-row align-items-baseline">
-					<h5>{{ product.name }} &nbsp;&nbsp;&nbsp;</h5>
-					<h4>{{ product.price }} &euro;</h4>
+				<div class="my-2 d-flex flex-column align-items-baseline">
+					<h5 class="text-secondary">{{ product.name }} &nbsp;&nbsp;&nbsp;</h5>
+					<h4 class="">{{ product.price }} &euro;</h4>
 				</div>
 				<h4>Stock: {{ product.stock }}</h4>
 				<button
+					id="add-product"
+					class="position-absolute"
 					@click="addProductToBasket"
 					:id="product.name">
-					Añadir a la cesta
+					Add to basket
 				</button>
 			</article>
 		</section>
@@ -40,7 +42,7 @@
 				products: [
 					{
 						photo: '/public/multimedia/images/products/rayo-mcqueen.jpg',
-						name: 'Rayo McQueen',
+						name: 'Lightning Mcqueen',
 						price: 350,
 						stock: 1,
 					},
@@ -52,9 +54,15 @@
 					},
 					{
 						photo: '/public/multimedia/images/products/tom-mate.jpg',
-						name: 'Tom Mate',
+						name: 'Tow Mater',
 						price: 300,
 						stock: 3,
+					},
+					{
+						photo: '/public/multimedia/images/products/doc-hudson.jpg',
+						name: 'Doc Hudson',
+						price: 1050,
+						stock: 0,
 					},
 				],
 				basket: [],
@@ -62,25 +70,44 @@
 		},
 		methods: {
 			addProductToBasket(e) {
-				let productToAdd = e.target.id;
-				this.products.forEach((element) => {
-					if (element.name === productToAdd) {
-						this.basket.push(productToAdd);
-						localStorage.setItem('basket', JSON.stringify(this.basket));
-						if (element.stock > 0) {
-							element.stock--;
-						} else {
-							Swal.fire({
-								icon: 'error',
-								title: 'Stock',
-								text: 'Esta fuera de stock',
-								// background: '#21605D',
-								// color: 'white',
-								// confirmButtonColor: '#339476',
-							});
+				let productToAdd = e.target;
+				let added = '✔️';
+				if (productToAdd.textContent !== added) {
+					this.products.forEach((element) => {
+						if (element.name === productToAdd.id) {
+							//When the product is purchased
+							//And is it still available in stock
+							if (element.stock > 0) {
+								this.basket.push(element);
+								this.money += element.price;
+								localStorage.setItem('basket', JSON.stringify(this.basket));
+								element.stock--;
+								productToAdd.textContent = added;
+								productToAdd.style.backgroundColor = '#7a9f79';
+							} else {
+								Swal.fire({
+									icon: 'error',
+									title: "We're sorry",
+									text: 'Out of stock',
+									background: '#191919',
+									color: 'white',
+									confirmButtonColor: '#6b6b6b',
+									confirmTextColor: 'black',
+								});
+							}
 						}
-					}
-				});
+					});
+				} else {
+					Swal.fire({
+						icon: 'error',
+						title: 'On basket',
+						text: 'Click on the shopping cart',
+						background: '#191919',
+						color: 'white',
+						confirmButtonColor: '#6b6b6b',
+						confirmTextColor: 'black',
+					});
+				}
 			},
 		},
 		computed: {
