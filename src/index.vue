@@ -31,7 +31,9 @@
 
 <script>
 	export default {
-		mounted() {},
+		mounted() {
+			localStorage.removeItem('basket');
+		},
 		data() {
 			return {
 				product: '',
