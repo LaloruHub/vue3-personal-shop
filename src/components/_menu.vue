@@ -36,7 +36,7 @@
 			<h4>Total: {{ toPay }}&euro;</h4>
 			<div v-for="(item, i) in basket">
 				<div
-				:id="i"
+					:id="i"
 					class="d-flex my-3">
 					<img
 						:src="item.photo"
@@ -45,9 +45,16 @@
 					<div class="d-flex flex-column mx-2">
 						<p>{{ item.name }}</p>
 						<p>{{ item.price }}&euro;</p>
+						<p>amount: {{ item.amount }}</p>
 					</div>
 					<div id="controls">
-						<a id="shopping-cart-trash" class="self-align-center" @click="deleteItem" :id="i">
+						<button :id="item.name" @click="removeOneOfStock">-</button>
+						<button :id="item.name" @click="addOneOfStock">+</button>
+						<a
+							id="shopping-cart-trash"
+							class="self-align-center"
+							@click="deleteItem"
+							:id="i">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="16"
@@ -82,7 +89,7 @@
 					this.basket = JSON.parse(localStorage.getItem('basket'));
 					if (this.basket !== null) {
 						this.toPay = 0;
-						this.basket.forEach((element) => {
+						this.basket.map((element) => {
 							this.toPay += element.price;
 						});
 					}
@@ -93,6 +100,25 @@
 				this.cartShowHide = !this.cartShowHide;
 			},
 			showLikes() {},
+			removeOneOfStock(e) {
+				let itemToRemove = e.target;
+				this.basket.map(element => {
+					if(element.name === itemToRemove.id){
+						element.amount--;
+						localStorage.setItem('basket',JSON.stringify(this.basket));
+
+					}
+				});
+			},
+			addOneOfStock(e) {
+				let itemToAdd = e.target;
+				this.basket.map(element => {
+					if(element.name === itemToAdd.id){
+						element.amount++;
+						localStorage.setItem('basket',JSON.stringify(this.basket));
+					}
+				});
+			},
 			deleteItem(e) {
 				let itemToDelete = e;
 				console.log(itemToDelete);

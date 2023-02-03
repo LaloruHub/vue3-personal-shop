@@ -31,25 +31,25 @@ body {
 	background-color: $grey !important;
 }
 
-button {
-	color: $grey;
-	background-color: $dark;
-
-	padding: 0.5em;
-
-	border: none;
-	border-radius: 7px !important;
-}
-
-img {
-	border-radius: 15px !important;
-}
-
 .container {
 	display: grid;
 	grid-template-columns: repeat(4, minmax(1px, 1fr));
 	grid-template-rows: repeat(auto-fit, minmax(50vh, 60vh));
 	row-gap: 0;
+	
+	button {
+		color: $grey;
+		background-color: $dark;
+
+		padding: 0.5em;
+
+		border: none;
+		border-radius: 7px !important;
+	}
+
+	img {
+		border-radius: 15px !important;
+	}
 }
 
 #menu {

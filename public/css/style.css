@@ -20,23 +20,21 @@ body {
   background-color: #f4f4f4 !important;
 }
 
-button {
+.container {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(1px, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(50vh, 60vh));
+  row-gap: 0;
+}
+.container button {
   color: #f4f4f4;
   background-color: #191919;
   padding: 0.5em;
   border: none;
   border-radius: 7px !important;
 }
-
-img {
+.container img {
   border-radius: 15px !important;
-}
-
-.container {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(1px, 1fr));
-  grid-template-rows: repeat(auto-fit, minmax(50vh, 60vh));
-  row-gap: 0;
 }
 
 #menu {
