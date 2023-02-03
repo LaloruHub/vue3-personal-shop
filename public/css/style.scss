@@ -126,20 +126,10 @@ a {
 	height: 40vw;
 
 	position: absolute;
+	z-index: 4;
 	top: 50%;
 
 	overflow: auto;
 
 	box-shadow: $drop-shadow;
-}
-
-#add-product{
-	margin-top: 5.5vw;
-	margin-left: 3vw;
-	display: none;
-}
-
-.product:hover + #add-product{
-	display: block;
-
 }

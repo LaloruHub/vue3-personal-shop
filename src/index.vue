@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="mt-5">
 		<input
 			type="search"
 			class="col-2 col-offset-4 my-4 mx-5"
@@ -8,20 +8,18 @@
 	</div>
 	<div class="container">
 		<section v-for="product in searchProduct">
-			<article class=" product d-flex flex-column align-items-start position-relative">
+			<article class="mx-5 product d-flex flex-column align-items-start position-relative">
 				<img
 					:src="product.photo"
 					:alt="product.name"
 					width="250"
 					height="150" />
 				<div class="my-2 d-flex flex-column align-items-baseline">
-					<h5 class="text-secondary">{{ product.name }} &nbsp;&nbsp;&nbsp;</h5>
-					<h4 class="">{{ product.price }} &euro;</h4>
+					<h6 class="text-secondary">{{ product.name }} &nbsp;&nbsp;&nbsp;</h6>
+					<h5 class="">{{ product.price }} &euro;</h5>
 				</div>
 				<h4>Stock: {{ product.stock }}</h4>
 				<button
-					id="add-product"
-					class="position-absolute"
 					@click="addProductToBasket"
 					:id="product.name">
 					Add to basket

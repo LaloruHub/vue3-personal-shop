@@ -36,6 +36,7 @@
 			<h4>Total: {{ toPay }}&euro;</h4>
 			<div v-for="(item, i) in basket">
 				<div
+				:id="i"
 					class="d-flex my-3">
 					<img
 						:src="item.photo"
@@ -93,7 +94,8 @@
 			},
 			showLikes() {},
 			deleteItem(e) {
-				let itemToDelete = e.target.id;
+				let itemToDelete = e;
+				console.log(itemToDelete);
 				this.basket.splice(itemToDelete, 1);
 				localStorage.setItem('basket', JSON.stringify(this.basket));
 			},
