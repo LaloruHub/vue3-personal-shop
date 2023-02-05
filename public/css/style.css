@@ -65,13 +65,13 @@ a:hover {
   width: 50px;
 }
 
-#shopping-cart-trash {
+.shopping-cart-trash {
   color: #6b6b6b !important;
 }
-#shopping-cart-trash:hover {
+.shopping-cart-trash:hover {
   color: #191919 !important;
 }
-#shopping-cart-trash svg {
+.shopping-cart-trash svg {
   width: 35px !important;
 }
 

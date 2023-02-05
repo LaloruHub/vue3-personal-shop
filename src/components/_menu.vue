@@ -32,6 +32,11 @@
 			v-if="cartShowHide"
 			id="shopping-cart"
 			class="p-4 d-flex flex-column">
+			<button
+				class="btn btn-outline-dark align-self-end col-2"
+				@click="this.cartShowHide = !this.cartShowHide">
+				X
+			</button>
 			<h2 class="align-self-center">Shopping cart</h2>
 			<h4>Total: {{ toPay }}&euro;</h4>
 			<div v-for="(item, i) in basket">
@@ -48,13 +53,20 @@
 						<p>amount: {{ item.amount }}</p>
 					</div>
 					<div id="controls">
-						<button :id="item.name" @click="removeOneOfStock">-</button>
-						<button :id="item.name" @click="addOneOfStock">+</button>
-						<a
-							id="shopping-cart-trash"
-							class="self-align-center"
-							@click="deleteItem"
-							:id="i">
+						<button
+							:id="item.name"
+							@click="removeOneOfStock">
+							-
+						</button>
+						<button
+							:id="item.name"
+							@click="addOneOfStock">
+							+
+						</button>
+						<button
+							:id="item.name"
+							class="self-align-center shopping-cart-trash"
+							@click="deleteItem">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="16"
@@ -65,7 +77,7 @@
 								<path
 									d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
 							</svg>
-						</a>
+						</button>
 					</div>
 				</div>
 			</div>
@@ -102,26 +114,55 @@
 			showLikes() {},
 			removeOneOfStock(e) {
 				let itemToRemove = e.target;
-				this.basket.map(element => {
-					if(element.name === itemToRemove.id){
-						element.amount--;
-						localStorage.setItem('basket',JSON.stringify(this.basket));
-
+				this.basket.map((element) => {
+					if (element.name === itemToRemove.id) {
+						if (element.amount > 1) {
+							element.amount--;
+							this.toPay = element.price * element.amount;
+							localStorage.setItem('basket', JSON.stringify(this.basket));
+						} else {
+							Swal.fire({
+								icon: 'error',
+								title: "We're sorry",
+								text: "If you don't want you can delete it",
+								background: '#191919',
+								color: 'white',
+								confirmButtonColor: '#6b6b6b',
+								confirmTextColor: 'black',
+							});
+						}
 					}
 				});
 			},
 			addOneOfStock(e) {
 				let itemToAdd = e.target;
-				this.basket.map(element => {
-					if(element.name === itemToAdd.id){
-						element.amount++;
-						localStorage.setItem('basket',JSON.stringify(this.basket));
+				this.basket.map((element) => {
+					if (element.name === itemToAdd.id) {
+						if (element.amount < element.stock) {
+							element.amount++;
+							this.toPay = element.price * element.amount;
+							localStorage.setItem('basket', JSON.stringify(this.basket));
+						} else {
+							Swal.fire({
+								icon: 'error',
+								title: "We're sorry",
+								text:
+									'We only have ' +
+									element.stock +
+									' stock for ' +
+									element.name,
+								background: '#191919',
+								color: 'white',
+								confirmButtonColor: '#6b6b6b',
+								confirmTextColor: 'black',
+							});
+						}
 					}
 				});
 			},
 			deleteItem(e) {
-				let itemToDelete = e;
-				console.log(itemToDelete);
+				let itemToDelete = e.target;
+				console.log(itemToDelete.id);
 				this.basket.splice(itemToDelete, 1);
 				localStorage.setItem('basket', JSON.stringify(this.basket));
 			},

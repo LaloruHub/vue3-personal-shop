@@ -81,9 +81,7 @@
 							//And is it still available in stock
 							if (element.stock > 0) {
 								this.basket.push(element);
-								this.money += element.price;
 								localStorage.setItem('basket', JSON.stringify(this.basket));
-								element.stock--;
 								productToAdd.textContent = added;
 								productToAdd.style.backgroundColor = '#7a9f79';
 							} else {
